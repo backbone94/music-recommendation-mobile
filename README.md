@@ -1,79 +1,95 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 📱 음악 추천 모바일 애플리케이션
 
-# Getting Started
+이 리액트 네이티브 프로젝트는 [음악 추천 웹 애플리케이션](https://music-recommendation-pi.vercel.app)을 모바일 환경에서 사용할 수 있도록 웹뷰로 감싼 애플리케이션입니다. 웹뷰를 통해 웹 애플리케이션의 모든 기능을 모바일 환경에서 동일하게 사용할 수 있습니다.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## 🛠️ 기술 스택 (Tech Stack)
 
-## Step 1: Start the Metro Server
+![React Native](https://img.shields.io/badge/React%20Native-%230078D4.svg?style=for-the-badge&logo=react&logoColor=white)
+![React Native WebView](https://img.shields.io/badge/React%20Native%20WebView-%23323330.svg?style=for-the-badge&logo=react&logoColor=white)
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 📥 설치 및 실행 (Installation & Setup)
 
-To start Metro, run the following command from the _root_ of your React Native project:
-
+1. 클론
 ```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
+git clone https://github.com/your-username/music-recommendation-mobile.git
+cd music-recommendation-mobile
 ```
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
+2. 의존성 설치
 ```bash
-# using npm
+npm install
+```
+
+3. Android:
+```bash
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### For iOS
-
+4. iOS (macOS에서만 사용 가능):
 ```bash
-# using npm
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## 📚 사용법 (Usage)
+앱을 실행하면 음악 추천 웹 애플리케이션이 로드됩니다.
+웹 애플리케이션에서 제공하는 모든 기능(일기 작성, 감정 분석, 음악 추천 등)을 모바일 환경에서 사용할 수 있습니다.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## 📝 주요 코드 (Key Code)
+```jsx
+import React, { useRef, useEffect } from 'react';
+import { View, StyleSheet, StatusBar, BackHandler } from 'react-native';
+import { WebView } from 'react-native-webview';
 
-## Step 3: Modifying your App
+const App = () => {
+  const webViewRef = useRef<WebView>(null);
 
-Now that you have successfully run the app, let's modify it.
+  useEffect(() => {
+    const onBackPress = () => {
+      if (webViewRef.current) {
+        webViewRef.current.goBack();
+        return true;
+      }
+      return false;
+    };
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    };
+  }, []);
 
-## Congratulations! :tada:
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <WebView
+        ref={webViewRef}
+        source={{ uri: 'https://music-recommendation-pi.vercel.app' }}
+        style={{ flex: 1 }}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+      />
+    </View>
+  );
+};
 
-You've successfully run and modified your React Native App. :partying_face:
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
 
-### Now what?
+export default App;
+```
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+## 🌐 배포 (Deployment)
+이 프로젝트는 현재 개발 단계에서 사용되며, 배포 준비가 완료된 상태는 아닙니다. 앱을 앱스토어 또는 구글 플레이에 배포하기 전에는 추가적인 설정과 테스트가 필요합니다.
 
-# Troubleshooting
+## ✨ 주요 기능 (Key Features)
+웹 애플리케이션의 기능을 그대로 모바일 환경에서 사용할 수 있습니다.
+웹뷰를 사용하여 일관된 사용자 경험을 제공합니다.
+간단한 설정으로 모바일 환경에서 웹 애플리케이션을 테스트할 수 있습니다.
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## 💡 참고 사항 (Notes)
+이 프로젝트는 음악 추천 웹 애플리케이션의 모바일 버전을 제공하기 위한 것입니다. 모든 기능은 웹 애플리케이션과 동일하며, 웹뷰를 통해 모바일 환경에 맞게 렌더링됩니다.
